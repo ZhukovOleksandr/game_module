@@ -1,7 +1,7 @@
 import random
 from termcolor import colored as clrd
 from exceptions import EnemyDown, GameOver
-from settings import character_for_attack, player_hit_points
+from settings import character_for_attack, player_hit_points, win, lose
 
 
 class Enemy:
@@ -47,20 +47,12 @@ class Player:
         lives  - attribute equal to "player_hit_points" by default and takes data from settings.py
 
     """
+
     def __init__(self, name, allowed_attacks=character_for_attack, lives=player_hit_points, score=0):
         self.name = name
         self.lives = lives
         self.score = score
         self.allowed_attacks = allowed_attacks
-
-    @staticmethod
-    def fight(attack, defense):
-        if attack == defense:
-            return 0
-        elif attack > defense:
-            return 1
-        else:
-            return -1
 
     def decrease_lives(self):
         self.lives -= 1
@@ -71,29 +63,52 @@ class Player:
         print(f"I love the smell of napalm in the morning! Time to attack!\n "
               f"Please, chose attack option:\n "
               f"{clrd(self.allowed_attacks, 'green')}")
-        user_attack = int(input())
-        fight_result = self.fight(user_attack, enemy_object.select_attack())
-        if fight_result == 0:
-            print(clrd("It's a draw!", 'white'))
-        elif fight_result == 1:
+        while True:
+            try:
+                user_attack = self.allowed_attacks.get(int(input()))
+                if user_attack is None:
+                    print("It is incorrect value, try again:")
+                    continue
+            except ValueError:
+                print("It is incorrect value, try again:")
+                continue
+            else:
+                break
+
+        fight_result = str(user_attack) + '-' + str(enemy_object.select_attack())
+        enemy_attack = fight_result.split('-')
+        print(f"Enemy chose: {clrd(enemy_attack[1], 'green')}")
+        if fight_result in win:
             print(clrd("Your attack was successfully", 'green'))
             enemy_object.decrease_lives()
-        else:
+        elif fight_result in lose:
             print(clrd("You missed!", 'red'))
-            self.decrease_lives()
+        else:
+            print(clrd("It's a draw!", 'white'))
 
     def defence(self, enemy_object):
-
         print(f"\nBe careful, {self.name}, they are in the trees!\n "
               f"Please, choose defence option:\n"
               f"{clrd(self.allowed_attacks, 'green')}")
-        user_attack = int(input())
-        fight_result = self.fight(enemy_object.select_attack(), user_attack)
-        if fight_result == 0:
-            print(clrd("It's a draw!", 'white'))
-        elif fight_result == 1:
-            print(clrd("Your defence was successfully", 'green'))
-            return enemy_object.decrease_lives()
-        else:
+        while True:
+            try:
+                user_attack = self.allowed_attacks.get(int(input()))
+                if user_attack is None:
+                    print("It is incorrect value, try again:")
+                    continue
+            except ValueError:
+                print("It is incorrect value, try again:")
+                continue
+            else:
+                break
+
+        fight_result = str(enemy_object.select_attack()) + '-' + str(user_attack)
+        enemy_attack = fight_result.split('-')
+        print(f"Enemy chose: {clrd(enemy_attack[0], 'green')}")
+        if fight_result in win:
             print(clrd("you took that punch!", 'red'))
             return self.decrease_lives()
+        elif fight_result in lose:
+            print(clrd("Your defence was successfully", 'green'))
+        else:
+            print(clrd("It's a draw!", 'white'))

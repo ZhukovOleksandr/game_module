@@ -1,5 +1,3 @@
-score_list = []
-with open('score.txt', 'r') as score_result:
-    for elem in score_result:
-        score_list.append(elem.split(' '))
-    score_result.close()
+fight_result = 'warrior-wizard'
+enemy_attack = fight_result.split('-')
+print(enemy_attack[1])

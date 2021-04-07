@@ -17,7 +17,13 @@ class GameOver(Exception):
 
 
 class EnemyDown(Exception):
-
     """"
     This class is empty and called when enemy lives equal to "0"
     """
+
+
+# class IncorrectValue(Exception):
+#     """"
+#         This exception raises when user typed incorrect value"
+#     """
+#     print("It is invalid value, try again:")

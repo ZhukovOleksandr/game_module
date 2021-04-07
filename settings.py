@@ -10,9 +10,13 @@ start_enemy_level - variable that contains value of enemy hit points
 
 """
 
-character_for_attack = {'wizard': 1,
-                        'warrior': 2,
-                        'bandit': 3
+character_for_attack = {1: 'wizard',
+                        2: 'warrior',
+                        3: 'bandit'
                         }
 player_hit_points = 5
 start_enemy_level = 1
+
+win = ['wizard-warrior', 'warrior-bandit', 'bandit-wizard']
+lose = ['warrior-wizard', 'bandit-warrior', 'wizard-bandit']
+
